@@ -44,8 +44,8 @@ export class ViemProvider implements BlockchainProvider {
             .value as bigint
         ).toString(),
         blockNumber: Number(log.blockNumber),
-        transactionHash: log.transactionHash,
-        logIndex: log.logIndex,
+        transactionHash: log.transactionHash ?? '',
+        logIndex: log.logIndex ?? 0,
       }),
     );
   }
