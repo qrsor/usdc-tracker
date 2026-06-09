@@ -3,10 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JsonRpcProvider } from 'ethers';
 import { BlockchainProvider } from './blockchain-provider.interface';
 import { UsdcTransferRaw } from './usdc-transfer-raw.model';
-import {
-  USDC_CONTRACT_ADDRESS,
-  TRANSFER_EVENT_TOPIC,
-} from './constants';
+import { USDC_CONTRACT_ADDRESS, TRANSFER_EVENT_TOPIC } from './constants';
 
 interface RawLog {
   topics: string[];

@@ -1,8 +1,9 @@
 # usdc-tracker
 
-NestJS 11 scaffold. Currently bare `GET / -> "Hello World!"`.
-Implementation roadmap at `IMPL_PLAN.md` — planned: blockchain provider
-abstraction (ethers/viem), USDC transfer query API.
+NestJS 11 API that tracks USDC transfers on Ethereum. Exposes
+`GET /usdc/transfers/:blockNumber?format=raw|human`. Blockchain
+provider abstraction (ethers/viem switchable via env). Implementation
+roadmap at `IMPL_PLAN.md`.
 
 ## Commands
 
@@ -27,26 +28,26 @@ abstraction (ethers/viem), USDC transfer query API.
 ## Architecture
 
 - Standard NestJS: AppModule -> AppController -> AppService.
+- `BlockchainModule` with DI token `BLOCKCHAIN_PROVIDER_TOKEN`. Factory
+  selects `EthersProvider` or `ViemProvider` based on env.
+- `UsdcController`: `GET /usdc/transfers/:blockNumber` with DTO
+  validation (`class-validator`) for `?format=raw|human`.
+- `UsdcService` bridges provider and applies USDC decimal conversion.
 - Single package (not a monorepo). Source root `src/`.
 - No database, middleware, guards, interceptors, pipes, filters yet.
 - No CI pipeline configured.
-- **Planned**: `BlockchainModule` (DI token `BLOCKCHAIN_PROVIDER_TOKEN`),
-  `UsdcController` (`GET /usdc/transfers/:blockNumber`), DTO validation
-  (`class-validator`) for `?format=raw|human`.
-- `IMPL_PLAN.md` has full checklist with current status.
 
-## Planned dependencies
+## Dependencies installed
 
-Install when implementing blockchain features:
-- `@nestjs/config` — env config (RPC_URL, BLOCKCHAIN_PROVIDER_TYPE, PORT)
-- `class-validator` + `class-transformer` — DTO validation
-- `ethers` + `viem` — blockchain RPC providers
+Runtime: `@nestjs/config`, `class-validator`, `class-transformer`,
+`ethers`, `viem`. All in `package.json`.
 
 ## Test quirks
 
 - Unit test config lives in `package.json` `jest` key—do not look for `jest.config.ts`.
 - E2E uses separate `test/jest-e2e.json`.
 - Both use `ts-jest` transform.
+- Integration test for providers uses `nock` for HTTP mocking.
 
 ## Generated code
 

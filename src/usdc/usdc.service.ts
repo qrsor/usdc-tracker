@@ -29,7 +29,7 @@ export class UsdcService {
     const raw = await this.provider.getUsdcTransfers(blockNumber);
 
     if (format === 'human') {
-      return raw.map(this.toHuman);
+      return raw.map((t) => this.toHuman(t));
     }
 
     return raw;

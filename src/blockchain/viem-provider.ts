@@ -4,10 +4,7 @@ import { createPublicClient, http, Log, parseAbiItem } from 'viem';
 import { mainnet } from 'viem/chains';
 import { BlockchainProvider } from './blockchain-provider.interface';
 import { UsdcTransferRaw } from './usdc-transfer-raw.model';
-import {
-  USDC_CONTRACT_ADDRESS,
-  TRANSFER_EVENT_TOPIC,
-} from './constants';
+import { USDC_CONTRACT_ADDRESS } from './constants';
 
 @Injectable()
 export class ViemProvider implements BlockchainProvider {
@@ -30,7 +27,7 @@ export class ViemProvider implements BlockchainProvider {
       event: parseAbiItem(
         'event Transfer(address indexed from, address indexed to, uint256 value)',
       ),
-      args: {} as Record<string, unknown>,
+      args: {},
       fromBlock: BigInt(blockNumber),
       toBlock: BigInt(blockNumber),
     });
@@ -40,9 +37,8 @@ export class ViemProvider implements BlockchainProvider {
         from: (log as unknown as { args: { from: string } }).args.from,
         to: (log as unknown as { args: { to: string } }).args.to,
         value: (
-          (log as unknown as { args: { value: bigint } }).args
-            .value as bigint
-        ).toString(),
+          log as unknown as { args: { value: bigint } }
+        ).args.value.toString(),
         blockNumber: Number(log.blockNumber),
         transactionHash: log.transactionHash ?? '',
         logIndex: log.logIndex ?? 0,

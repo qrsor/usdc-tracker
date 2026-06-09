@@ -73,9 +73,7 @@ describe('UsdcController (e2e)', () => {
   });
 
   it('GET /usdc/transfers/:blockNumber returns 400 for invalid blockNumber', () => {
-    return request(app.getHttpServer())
-      .get('/usdc/transfers/abc')
-      .expect(400);
+    return request(app.getHttpServer()).get('/usdc/transfers/abc').expect(400);
   });
 
   it('GET /usdc/transfers/:blockNumber returns 400 for invalid format', () => {
@@ -87,9 +85,7 @@ describe('UsdcController (e2e)', () => {
   it('passes blockNumber to the provider', async () => {
     mockProvider.getUsdcTransfers.mockClear();
 
-    await request(app.getHttpServer())
-      .get('/usdc/transfers/999')
-      .expect(200);
+    await request(app.getHttpServer()).get('/usdc/transfers/999').expect(200);
 
     expect(mockProvider.getUsdcTransfers).toHaveBeenCalledWith(999);
   });
