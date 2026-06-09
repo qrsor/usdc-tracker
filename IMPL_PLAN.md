@@ -28,7 +28,7 @@ Understood. Let's switch to English. Here is the comprehensive, step-by-step imp
 
 ### Step 4: Automated Testing Strategy (QA)
 
-* [ ] **4.1.** **Unit Tests:** Verify the formatting logic (`raw` vs `human`) in `UsdcService` using a mocked blockchain provider.
-* [ ] **4.2.** **Unit Tests:** Verify the factory behavior, ensuring it throws appropriate errors for invalid `.env` configurations.
-* [ ] **4.3.** **Integration Tests:** Validate hex-log parsing from JSON-RPC responses into our domain model for both `EthersProvider` and `ViemProvider` using HTTP mocking (e.g., `nock` or MSW).
-* [ ] **4.4.** **End-to-End (E2E) Tests:** Use `supertest` to verify HTTP responses, ensuring proper input validation (e.g., 400 Bad Request for invalid block numbers or formats).
+* [x] **4.1.** **Unit Tests:** Verify the formatting logic (`raw` vs `human`) in `UsdcService` using a mocked blockchain provider.
+* [x] **4.2.** **Unit Tests:** Verify the factory behavior, ensuring it throws appropriate errors for invalid `.env` configurations.
+* [x] **4.3.** **Integration Tests:** Validate hex-log parsing from JSON-RPC responses into our domain model for both `EthersProvider` and `ViemProvider` using HTTP mocking (e.g., `nock` or MSW).
+* [x] **4.4.** **End-to-End (E2E) Tests:** Use `supertest` to verify HTTP responses, ensuring proper input validation (e.g., 400 Bad Request for invalid block numbers or formats).

@@ -1,12 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JsonRpcProvider, Log } from 'ethers';
+import { JsonRpcProvider } from 'ethers';
 import { BlockchainProvider } from './blockchain-provider.interface';
 import { UsdcTransferRaw } from './usdc-transfer-raw.model';
 import {
   USDC_CONTRACT_ADDRESS,
   TRANSFER_EVENT_TOPIC,
 } from './constants';
+
+interface RawLog {
+  topics: string[];
+  data: string;
+  transactionHash: string;
+  logIndex: string;
+}
 
 @Injectable()
 export class EthersProvider implements BlockchainProvider {
@@ -21,14 +28,14 @@ export class EthersProvider implements BlockchainProvider {
   async getUsdcTransfers(blockNumber: number): Promise<UsdcTransferRaw[]> {
     this.logger.debug(`Fetching USDC transfers at block ${blockNumber}`);
 
-    const logs: Log[] = (await this.provider.send('eth_getLogs', [
+    const logs: RawLog[] = (await this.provider.send('eth_getLogs', [
       {
         address: USDC_CONTRACT_ADDRESS,
         topics: [TRANSFER_EVENT_TOPIC],
         fromBlock: `0x${blockNumber.toString(16)}`,
         toBlock: `0x${blockNumber.toString(16)}`,
       },
-    ])) as Log[];
+    ])) as RawLog[];
 
     return logs.map(
       (log): UsdcTransferRaw => ({
@@ -37,7 +44,7 @@ export class EthersProvider implements BlockchainProvider {
         value: BigInt(log.data).toString(),
         blockNumber,
         transactionHash: log.transactionHash,
-        logIndex: log.index,
+        logIndex: Number(log.logIndex),
       }),
     );
   }
