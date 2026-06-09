@@ -22,9 +22,9 @@ Understood. Let's switch to English. Here is the comprehensive, step-by-step imp
 
 ### Step 3: Business Logic & API Controller
 
-* [ ] **3.1.** Create `GetTransfersQueryDto` with strict validation for the `format` query parameter (`raw` | `human`) using `class-validator`.
-* [ ] **3.2.** Create `UsdcService` to aggregate data from the selected provider and apply BigInt conversion logic to the target string format.
-* [ ] **3.3.** Create `UsdcController` with the `GET /usdc/transfers/:blockNumber` route and bind the global `ValidationPipe`.
+* [x] **3.1.** Create `GetTransfersQueryDto` with strict validation for the `format` query parameter (`raw` | `human`) using `class-validator`.
+* [x] **3.2.** Create `UsdcService` to aggregate data from the selected provider and apply BigInt conversion logic to the target string format.
+* [x] **3.3.** Create `UsdcController` with the `GET /usdc/transfers/:blockNumber` route and bind the global `ValidationPipe`.
 
 ### Step 4: Automated Testing Strategy (QA)
 
