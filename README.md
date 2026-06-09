@@ -1,98 +1,110 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# USDC Tracker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+NestJS 11 API that tracks USDC (FiatUSD) transfers on Ethereum.
+Exposes a single endpoint to query all `Transfer` events at a given block.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+## Quick start
 
 ```bash
-$ npm install
+npm install
+cp .env.example .env   # edit RPC_URL with a real Ethereum node URL
+npm run start:dev       # http://localhost:3000
 ```
 
-## Compile and run the project
+## Environment variables
 
-```bash
-# development
-$ npm run start
+| Variable                   | Default   | Description                                      |
+|----------------------------|-----------|--------------------------------------------------|
+| `PORT`                     | `3000`    | HTTP server port                                 |
+| `RPC_URL`                  | _(none)_  | Ethereum JSON-RPC endpoint (required)             |
+| `BLOCKCHAIN_PROVIDER_TYPE` | `ethers`  | Provider library: `ethers` or `viem`              |
+| `NODE_ENV`                 | `development` | Controls pino-pretty output (pretty in dev)    |
+| `LOG_LEVEL`                | `info`    | Pino log level: `debug`, `info`, `warn`, `error`  |
 
-# watch mode
-$ npm run start:dev
+## API
 
-# production mode
-$ npm run start:prod
+### `GET /usdc/transfers/:blockNumber`
+
+Returns all USDC `Transfer` events at the given block number.
+
+**Path parameters**
+
+| Name          | Type   | Description                      |
+|---------------|--------|----------------------------------|
+| `blockNumber` | `int`  | Ethereum block number (decimal)  |
+
+**Query parameters**
+
+| Name     | Type     | Default | Description                                               |
+|----------|----------|---------|-----------------------------------------------------------|
+| `format` | `string` | `raw`   | Response format: `raw` (6-decimal string) or `human` (dot-formatted) |
+
+**200 response (`format=raw`)**
+
+```json
+[
+  {
+    "from": "0xabcd...",
+    "to": "0xef01...",
+    "value": "1000000",
+    "blockNumber": 20000000,
+    "transactionHash": "0x...",
+    "logIndex": 3
+  }
+]
 ```
 
-## Run tests
+**200 response (`format=human`)**
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```json
+[
+  {
+    "from": "0xabcd...",
+    "to": "0xef01...",
+    "value": "1.000000",
+    "blockNumber": 20000000,
+    "transactionHash": "0x...",
+    "logIndex": 3
+  }
+]
 ```
 
-## Deployment
+**Error responses**
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+| Status | Body                           | Trigger              |
+|--------|--------------------------------|----------------------|
+| 400    | `{ "message": [...], ... }`     | Invalid block number or format query param |
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Scripts
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+| Command               | Description                    |
+|-----------------------|--------------------------------|
+| `npm run start:dev`   | Dev server with file watching  |
+| `npm run build`       | Compile to `dist/`             |
+| `npm run start:prod`  | Run compiled production build  |
+| `npm test`            | Unit + integration tests       |
+| `npm run test:e2e`    | End-to-end tests               |
+| `npm run test:cov`    | Unit tests with coverage       |
+| `npm run lint`        | Lint + auto-fix                |
+| `npm run format`      | Prettier format                |
+
+## Architecture
+
+```
+AppModule
+├── ConfigModule          — .env loading (global)
+├── LoggerModule          — pino structured logging (global)
+├── UsdcModule
+│   ├── UsdcController    — GET /usdc/transfers/:blockNumber
+│   └── UsdcService       — business logic, decimal conversion
+└── BlockchainModule
+    ├── EthersProvider    — ethers v6 JsonRpcProvider
+    ├── ViemProvider      — viem public client
+    └── BlockchainFactory — selects provider via env
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The active blockchain provider library is selected at runtime via `BLOCKCHAIN_PROVIDER_TYPE` and injected through the `BLOCKCHAIN_PROVIDER_TOKEN` DI token.
 
-## Resources
+## Implementation plan
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+See [`IMPL_PLAN.md`](./IMPL_PLAN.md) for the full implementation checklist.

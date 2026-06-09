@@ -5,6 +5,7 @@ import { BlockchainProvider } from './blockchain-provider.interface';
 import { UsdcTransferRaw } from './usdc-transfer-raw.model';
 import { USDC_CONTRACT_ADDRESS, TRANSFER_EVENT_TOPIC } from './constants';
 
+/** Shape of a raw log entry returned by eth_getLogs. */
 interface RawLog {
   topics: string[];
   data: string;
@@ -12,6 +13,11 @@ interface RawLog {
   logIndex: string;
 }
 
+/**
+ * Ethereum provider implemented via ethers v6 JsonRpcProvider.
+ * Uses eth_getLogs with the USDC contract address and Transfer topic filter.
+ * Extracts from/to addresses from indexed event parameters (topics).
+ */
 @Injectable()
 export class EthersProvider implements BlockchainProvider {
   private readonly logger = new Logger(EthersProvider.name);

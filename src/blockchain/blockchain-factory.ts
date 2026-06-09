@@ -4,6 +4,11 @@ import { EthersProvider } from './ethers-provider';
 import { ViemProvider } from './viem-provider';
 import { BlockchainProvider } from './blockchain-provider.interface';
 
+/**
+ * Factory that selects the active blockchain provider based on
+ * the BLOCKCHAIN_PROVIDER_TYPE env variable ("ethers" | "viem").
+ * Defaults to ethers when unset. Throws on unknown values.
+ */
 @Injectable()
 export class BlockchainFactory {
   private readonly logger = new Logger(BlockchainFactory.name);

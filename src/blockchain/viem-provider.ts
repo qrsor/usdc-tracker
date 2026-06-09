@@ -6,6 +6,11 @@ import { BlockchainProvider } from './blockchain-provider.interface';
 import { UsdcTransferRaw } from './usdc-transfer-raw.model';
 import { USDC_CONTRACT_ADDRESS } from './constants';
 
+/**
+ * Ethereum provider implemented via viem public client.
+ * Uses getLogs with the parsed Transfer ABI event and USDC contract address.
+ * viem decodes event args (from, to, value) automatically.
+ */
 @Injectable()
 export class ViemProvider implements BlockchainProvider {
   private readonly logger = new Logger(ViemProvider.name);

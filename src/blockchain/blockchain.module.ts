@@ -4,6 +4,11 @@ import { BlockchainFactory } from './blockchain-factory';
 import { EthersProvider } from './ethers-provider';
 import { ViemProvider } from './viem-provider';
 
+/**
+ * Provides the abstracted blockchain provider via the
+ * BLOCKCHAIN_PROVIDER_TOKEN DI token. The factory selects ethers or
+ * viem at runtime based on configuration.
+ */
 @Module({
   providers: [
     EthersProvider,
