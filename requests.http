@@ -1,0 +1,14 @@
+### Healthcheck
+GET {{baseUrl}}/health
+
+### USDC transfers — raw format (default)
+GET {{baseUrl}}/usdc/transfers/20000000
+
+### USDC transfers — human format
+GET {{baseUrl}}/usdc/transfers/20000000?format=human
+
+### USDC transfers — invalid block number (400)
+GET {{baseUrl}}/usdc/transfers/abc
+
+### USDC transfers — invalid format param (400)
+GET {{baseUrl}}/usdc/transfers/20000000?format=invalid
