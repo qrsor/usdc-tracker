@@ -13,13 +13,16 @@ npm run start:dev       # http://localhost:3000
 
 ## Environment variables
 
-| Variable                   | Default   | Description                                      |
-|----------------------------|-----------|--------------------------------------------------|
-| `PORT`                     | `3000`    | HTTP server port                                 |
-| `RPC_URL`                  | _(none)_  | Ethereum JSON-RPC endpoint (required)             |
-| `BLOCKCHAIN_PROVIDER_TYPE` | `ethers`  | Provider library: `ethers` or `viem`              |
-| `NODE_ENV`                 | `development` | Controls pino-pretty output (pretty in dev)    |
-| `LOG_LEVEL`                | `info`    | Pino log level: `debug`, `info`, `warn`, `error`  |
+| Variable                   | Default       | Description                                      |
+|----------------------------|---------------|--------------------------------------------------|
+| `PORT`                     | `3000`        | HTTP server port                                 |
+| `RPC_URL`                  | _(none)_      | Ethereum JSON-RPC endpoint (required)             |
+| `BLOCKCHAIN_PROVIDER_TYPE` | `ethers`      | Provider library: `ethers` or `viem`              |
+| `CACHE_STORE_TYPE`         | `IN_MEMORY`   | Cache backend: `IN_MEMORY` or `REDIS`             |
+| `REDIS_URL`                | _(none)_      | Redis connection string (required if REDIS store) |
+| `CACHE_DEFAULT_TTL_MS`     | `600000`      | Default cache TTL in milliseconds                 |
+| `NODE_ENV`                 | `development` | Controls pino-pretty output (pretty in dev)       |
+| `LOG_LEVEL`                | `info`        | Pino log level: `debug`, `info`, `warn`, `error`  |
 
 ## API
 
