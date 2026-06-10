@@ -5,8 +5,8 @@ import { ConfigService } from '@nestjs/config';
 /**
  * Dynamically configures the NestJS CacheModule based on env.
  *
- * - `CACHE_STORE_TYPE=REDIS` → uses cache-manager-redis-yet with REDIS_URL
- * - `CACHE_STORE_TYPE=IN_MEMORY` (default) → in-memory store with 100-entry cap
+ * - `CACHE_STORE_TYPE=REDIS` → uses @keyv/redis with REDIS_URL
+ * - `CACHE_STORE_TYPE=IN_MEMORY` (default) → in-memory store
  */
 @Global()
 @Module({})
@@ -28,11 +28,11 @@ export class CacheConfigModule {
             );
 
             if (storeType === 'REDIS') {
-              const { redisStore } = await import('cache-manager-redis-yet');
-              const store = await redisStore({
-                url: configService.getOrThrow<string>('REDIS_URL'),
-              });
-              return { store, ttl };
+              const KeyvRedis = (await import('@keyv/redis')).default;
+              const keyvRedis = new KeyvRedis(
+                configService.getOrThrow<string>('REDIS_URL'),
+              );
+              return { stores: [keyvRedis], ttl };
             }
 
             return { ttl, max: 100 };

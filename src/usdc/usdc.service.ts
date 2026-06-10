@@ -96,7 +96,10 @@ export class UsdcService {
       this.logger.warn('Failed to fetch latest block; using default TTL');
     }
 
-    return this.configService.get<number>('CACHE_DEFAULT_TTL_MS', 600000);
+    return parseInt(
+      this.configService.get<string>('CACHE_DEFAULT_TTL_MS', '600000'),
+      10,
+    );
   }
 
   /** Convert a raw transfer value to a human-readable decimal string. */
