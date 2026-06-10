@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CacheConfigModule } from './cache/cache-config.module';
 import { UsdcModule } from './usdc/usdc.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { UsdcModule } from './usdc/usdc.module';
         level: process.env.LOG_LEVEL ?? 'info',
       },
     }),
+    CacheConfigModule.forRoot(),
     UsdcModule,
   ],
   controllers: [AppController],

@@ -28,6 +28,10 @@ export class EthersProvider implements BlockchainProvider {
     this.provider = new JsonRpcProvider(rpcUrl);
   }
 
+  async getLatestBlockNumber(): Promise<number> {
+    return this.provider.getBlockNumber();
+  }
+
   async getUsdcTransfers(blockNumber: number): Promise<UsdcTransferRaw[]> {
     this.logger.debug(`Fetching USDC transfers at block ${blockNumber}`);
 

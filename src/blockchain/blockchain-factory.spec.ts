@@ -8,8 +8,14 @@ describe('BlockchainFactory', () => {
   let factory: BlockchainFactory;
   let mockConfig: { get: jest.Mock };
 
-  const mockEthersProvider = { getUsdcTransfers: jest.fn() };
-  const mockViemProvider = { getUsdcTransfers: jest.fn() };
+  const mockEthersProvider = {
+    getUsdcTransfers: jest.fn(),
+    getLatestBlockNumber: jest.fn(),
+  };
+  const mockViemProvider = {
+    getUsdcTransfers: jest.fn(),
+    getLatestBlockNumber: jest.fn(),
+  };
 
   beforeEach(async () => {
     mockConfig = { get: jest.fn() };

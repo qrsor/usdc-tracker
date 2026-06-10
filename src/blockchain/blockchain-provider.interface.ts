@@ -4,4 +4,6 @@ import { UsdcTransferRaw } from './usdc-transfer-raw.model';
 export interface BlockchainProvider {
   /** Fetch all USDC Transfer events at a given block number. */
   getUsdcTransfers(blockNumber: number): Promise<UsdcTransferRaw[]>;
+  /** Fetch the latest block number from the chain. */
+  getLatestBlockNumber(): Promise<number>;
 }

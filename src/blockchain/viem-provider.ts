@@ -24,6 +24,10 @@ export class ViemProvider implements BlockchainProvider {
     });
   }
 
+  async getLatestBlockNumber(): Promise<number> {
+    return Number(await this.client.getBlockNumber());
+  }
+
   async getUsdcTransfers(blockNumber: number): Promise<UsdcTransferRaw[]> {
     this.logger.debug(`Fetching USDC transfers at block ${blockNumber}`);
 

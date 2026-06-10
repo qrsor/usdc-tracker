@@ -32,3 +32,15 @@ Understood. Let's switch to English. Here is the comprehensive, step-by-step imp
 * [x] **4.2.** **Unit Tests:** Verify the factory behavior, ensuring it throws appropriate errors for invalid `.env` configurations.
 * [x] **4.3.** **Integration Tests:** Validate hex-log parsing from JSON-RPC responses into our domain model for both `EthersProvider` and `ViemProvider` using HTTP mocking (e.g., `nock` or MSW).
 * [x] **4.4.** **End-to-End (E2E) Tests:** Use `supertest` to verify HTTP responses, ensuring proper input validation (e.g., 400 Bad Request for invalid block numbers or formats).
+
+### Step 5: Caching Layer (Feature-Toggled In-Memory / Redis)
+
+* [x] **5.1.** Install `@nestjs/cache-manager`, `cache-manager`, `cache-manager-redis-yet`, `redis`.
+* [x] **5.2.** Add `CACHE_STORE_TYPE`, `REDIS_URL`, `CACHE_DEFAULT_TTL_MS` to `.env`.
+* [x] **5.3.** Create `CacheConfigModule` with async factory that switches store via env.
+* [x] **5.4.** Add `getLatestBlockNumber()` to `BlockchainProvider` interface and both providers (needed for finality check).
+* [x] **5.5.** Inject `CACHE_MANAGER` into `UsdcService`; implement cache-aside pattern with compound key `usdc:transfers:{blockNumber}:{format}`.
+* [x] **5.6.** Implement block finality awareness: finalized blocks (latest - 12) get permanent TTL, recent blocks use `CACHE_DEFAULT_TTL_MS`.
+* [x] **5.7.** **Unit Tests:** Cache hit/miss behavior with mocked cache manager.
+* [x] **5.8.** **Integration Tests:** Verify finality-based TTL logic.
+* [x] **5.9.** Verify lint, full test suite, build.
